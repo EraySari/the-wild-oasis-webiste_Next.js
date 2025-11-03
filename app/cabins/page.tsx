@@ -1,8 +1,19 @@
 import { Suspense } from "react";
 import CabinList from "../_components/Cabin/CabinList";
 import Spinner from "../_components/Spinner";
+import { FilterCabin } from "../_components/Cabin/FilterCabin";
 
-export default function Page() {
+// export const revalidate = 0; dynamic yapar
+// export const revalidate = 3600; //static kalir ama her 1 saate bir güncellenir (sadece static sayfalarda gecerli)
+// searchParams dinamik yapar o yüzden gecersiz
+
+export default function Page({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
+  const filter = searchParams?.capacity ?? "all";
+
   return (
     <div>
       <h1 className="text-4xl mb-5 text-accent-400 font-medium">
@@ -17,8 +28,12 @@ export default function Page() {
         Welcome to paradise.
       </p>
 
-      <Suspense fallback={<Spinner />}>
-        <CabinList />
+      <div className="flex justify-end mb-5">
+        <FilterCabin />
+      </div>
+
+      <Suspense fallback={<Spinner />} key={filter}>
+        <CabinList filter={filter} />
       </Suspense>
     </div>
   );

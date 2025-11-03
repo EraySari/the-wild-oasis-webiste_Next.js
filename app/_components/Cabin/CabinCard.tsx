@@ -20,11 +20,15 @@ function CabinCard({ cabin }: CabinCardProps) {
 
   return (
     <div className="flex border-primary-800 border">
-      <Image
-        src={image ? image : ""}
-        alt={`Cabin ${name}`}
-        className="flex-1 border-r border-primary-800"
-      />
+      <div className="relative ">
+        {" "}
+        <Image
+          src={image ? image : ""}
+          alt={`Cabin ${name}`}
+          fill
+          className="flex-1 border-r border-primary-800"
+        />
+      </div>
 
       <div className="flex-grow">
         <div className="pt-5 pb-4 px-7 bg-primary-950">

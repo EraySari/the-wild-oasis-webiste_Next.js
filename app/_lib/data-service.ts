@@ -8,6 +8,7 @@ export type Cabin = {
   regular_price: number;
   discount: number | null;
   image: string | null;
+  description: string | null;
 };
 
 export type Guest = {
@@ -137,7 +138,7 @@ type BookingListItem = Pick<
 >;
 
 type CabinMini = Pick<Cabin, "name" | "image">;
-type BookingWithCabin = BookingListItem & { cabins: CabinMini | null };
+export type BookingWithCabin = BookingListItem & { cabins: CabinMini | null };
 
 export async function getBookings(
   guest_id: string
@@ -155,7 +156,7 @@ export async function getBookings(
     throw new Error("Bookings could not get loaded");
   }
 
-  const normalized: BookingWithCabin[] = (data ?? []).map((row: any) => ({
+  const normalized: BookingWithCabin[] = (data ?? []).map((row) => ({
     id: row.id,
     created_at: row.created_at,
     start_date: row.start_date,
