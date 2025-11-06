@@ -29,7 +29,7 @@ export default function Page({
       </p>
 
       <div className="flex justify-end mb-5">
-        <FilterCabin />
+        <FilterCabin filter={filter} />
       </div>
 
       <Suspense fallback={<Spinner />} key={filter}>

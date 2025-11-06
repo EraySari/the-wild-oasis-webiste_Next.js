@@ -15,17 +15,18 @@ export type Guest = {
   id: string;
   full_name: string;
   email: string;
+  nationalty: string | null;
   national_id?: string | null;
   country?: string | null;
   country_flag?: string | null;
-  [key: string]: unknown; // esneklik
+  [key: string]: unknown;
 };
 
 export type Booking = {
   id: string;
   created_at: string;
-  start_date: string; // ISO
-  end_date: string; // ISO
+  start_date: string;
+  end_date: string;
   num_nights: number;
   num_guests: number;
   total_price: number;
@@ -210,6 +211,8 @@ export async function getSettings(): Promise<Settings> {
     .from("settings")
     .select("*")
     .single<Settings>();
+
+  //await new Promise((res) => setTimeout(res, 5000));
 
   if (error || !data) {
     console.error(error);

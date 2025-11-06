@@ -1,4 +1,4 @@
-import ReservationCard from "@/app/_components/ReservationCard";
+import ReservationCard from "@/app/_components/Reservation/ReservationCard";
 import { getBookings } from "@/app/_lib/data-service";
 
 export default async function Page() {

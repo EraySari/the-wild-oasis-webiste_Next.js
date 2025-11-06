@@ -2,12 +2,12 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export function FilterCabin() {
+export function FilterCabin({ filter }: { filter: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const filter = searchParams.get("capacity");
+  //const filter = searchParams.get("capacity");
 
   function handleFilter(filter: string) {
     const params = new URLSearchParams(searchParams);
