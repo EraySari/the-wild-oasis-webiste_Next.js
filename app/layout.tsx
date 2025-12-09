@@ -1,6 +1,7 @@
 import "@/app/_styles/globals.css";
 import { Josefin_Sans } from "next/font/google";
 import Header from "./_components/Header";
+import { ReservationProvider } from "./_components/Reservation/ReservationContext";
 
 export const metadata = {
   title: {
@@ -26,7 +27,9 @@ export default function RootLayout({
       >
         <Header />
         <div className="flex-1 px-8 py-10 grid ">
-          <main className="max-w-[90rem] mx-auto w-full">{children}</main>
+          <main className="max-w-[90rem] mx-auto w-full">
+            <ReservationProvider>{children}</ReservationProvider>
+          </main>
         </div>
       </body>
     </html>

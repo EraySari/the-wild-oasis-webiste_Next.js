@@ -19,7 +19,7 @@ export async function BookingPanel({ cabin }: { cabin: Cabin }) {
         bookedDates={bookedDates}
         settings={settings}
       />
-      <ReservationForm maxCapacity={cabin.max_capacity} />
+      <ReservationForm maxCapacity={cabin.max_capacity} cabin_id={cabin.id} />
     </div>
   );
 }

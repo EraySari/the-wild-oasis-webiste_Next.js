@@ -1,24 +1,21 @@
 "use client";
 
-import { isWithinInterval } from "date-fns";
-import { DateRange, DayPicker } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { Cabin, Settings } from "../_lib/data-service";
-import { useState } from "react";
 
-//settings verileri cekilecek
-//booking verileri cekilecek dolu olan tarihler icin
-//cabin verileri fiyatlandirma icin
+import { useReservation } from "./Reservation/ReservationContext";
+import { useEffect, useMemo } from "react";
 
-function isAlreadyBooked(range, datesArr) {
-  return (
-    range.from &&
-    range.to &&
-    datesArr.some((date) =>
-      isWithinInterval(date, { start: range.from, end: range.to })
-    )
-  );
-}
+// function isAlreadyBooked(range, datesArr) {
+//   return (
+//     range.from &&
+//     range.to &&
+//     datesArr.some((date) =>
+//       isWithinInterval(date, { start: range.from, end: range.to })
+//     )
+//   );
+// }
 
 interface DateSelectorProps {
   cabin: Cabin;
@@ -28,20 +25,23 @@ interface DateSelectorProps {
 
 function DateSelector({ cabin, bookedDates, settings }: DateSelectorProps) {
   const { regular_price, discount } = cabin;
-  const [range, setRange] = useState<DateRange | undefined>(undefined);
+
+  const { range, setRange, resetRange, num_nights, setTotalPrice } =
+    useReservation();
 
   const { min_booking_length, max_booking_length } = settings;
 
-  function resetRange() {
-    setRange(undefined);
-  }
+  const discountValue = discount ?? 0;
+  const hasDiscount = discountValue > 0;
 
-  const nights =
-    range?.from && range?.to
-      ? Math.ceil(
-          (range.to.getTime() - range.from.getTime()) / (1000 * 60 * 60 * 24)
-        )
-      : 0;
+  const pricePerNight = useMemo(
+    () => regular_price - discountValue,
+    [regular_price, discountValue]
+  );
+
+  useEffect(() => {
+    setTotalPrice(num_nights > 0 ? pricePerNight * num_nights : 0);
+  }, [num_nights, pricePerNight, setTotalPrice]);
 
   return (
     <div className="flex flex-col justify-between">
@@ -54,7 +54,7 @@ function DateSelector({ cabin, bookedDates, settings }: DateSelectorProps) {
         max={max_booking_length}
         fromMonth={new Date()}
         fromDate={new Date()}
-        toYear={new Date().getFullYear() + 5}
+        toYear={new Date().getFullYear() + 1}
         captionLayout="dropdown"
         numberOfMonths={2}
         disabled={bookedDates}
@@ -63,7 +63,7 @@ function DateSelector({ cabin, bookedDates, settings }: DateSelectorProps) {
       <div className="flex items-center justify-between px-8 bg-accent-500 text-primary-800 h-[72px]">
         <div className="flex items-baseline gap-6">
           <p className="flex gap-2 items-baseline">
-            {discount > 0 ? (
+            {hasDiscount ? (
               <>
                 <span className="text-2xl">${regular_price - discount}</span>
                 <span className="line-through font-semibold text-primary-700">
@@ -75,15 +75,15 @@ function DateSelector({ cabin, bookedDates, settings }: DateSelectorProps) {
             )}
             <span className="">/night</span>
           </p>
-          {nights ? (
+          {num_nights && hasDiscount ? (
             <>
               <p className="bg-accent-600 px-3 py-2 text-2xl">
-                <span>&times;</span> <span>{nights}</span>
+                <span>&times;</span> <span>{num_nights}</span>
               </p>
               <p>
                 <span className="text-lg font-bold uppercase">Total</span>{" "}
                 <span className="text-2xl font-semibold">
-                  ${(regular_price - discount) * nights}
+                  ${(regular_price - discount) * num_nights}
                 </span>
               </p>
             </>

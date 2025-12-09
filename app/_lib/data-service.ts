@@ -33,6 +33,7 @@ export type Booking = {
   status?: "unconfirmed" | "checked-in" | "checked-out" | "cancelled";
   guest_id: string;
   cabin_id: string;
+  observations?: string;
 };
 
 export type Settings = {

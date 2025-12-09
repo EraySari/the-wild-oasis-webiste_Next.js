@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import CabinList from "../_components/Cabin/CabinList";
 import Spinner from "../_components/Spinner";
 import { FilterCabin } from "../_components/Cabin/FilterCabin";
+import { ReservationReminder } from "../_components/ReservationReminder";
 
 // export const revalidate = 0; dynamic yapar
 // export const revalidate = 3600; //static kalir ama her 1 saate bir güncellenir (sadece static sayfalarda gecerli)
@@ -34,6 +35,7 @@ export default function Page({
 
       <Suspense fallback={<Spinner />} key={filter}>
         <CabinList filter={filter} />
+        <ReservationReminder />
       </Suspense>
     </div>
   );
